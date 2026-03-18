@@ -1,0 +1,152 @@
+/*
+Funciones que retornan informacion util para las partidas
+*/
+
+//Foe Info
+
+func fId()
+ return foe.id
+
+func fS()
+ return foe.state
+
+func fT()
+ return foe.time
+
+func fD()
+ return foe.distance
+
+func fC()
+ return foe.count
+
+func fZ()
+ return foe.z
+
+func fHp()
+ return foe.hp
+
+func fMaxHp()
+ return foe.maxhp
+
+func fAr()
+ return foe.armor
+
+func fMaxAr()
+ return foe.maxarmor
+
+func fLvl()
+ return foe.level
+
+func fDmg()
+ return foe.damage
+
+func fBuffCount()
+  return foe.buffs.count
+
+func fBuffList()
+  return foe.buffs.string
+
+func fDebuffCount()
+  return foe.debuffs.count
+
+func fDebuffList()
+  return foe.debuffs.string
+
+//return func reference
+
+func fBuffGetCount()
+  return foe.buffs.GetCount
+
+func fBuffGetTime()
+  return foe.buffs.GetTime
+
+func fDebuffGetCount()
+  return foe.debuffs.GetCount
+
+func fDebuffGetTime()
+  return foe.debuffs.GetTime
+
+func fGetCount()
+ return foe.GetCount
+
+// Especial
+func isElite()
+ return encounter.isElite
+
+func Modifier()
+ return encounter.eliteMod
+
+//Player
+
+func pX()
+ return pos.x
+
+func pY()
+ return pos.y
+
+func pZ()
+ return pos.z
+
+func pHp()
+ return hp
+
+func pMaxHp()
+ return maxhp
+
+func pAr()
+ return armor
+
+func pMaxAr()
+ return maxarmor
+
+func pBuffCount()
+  return buffs.count
+
+func pBuffList()
+  return foe.buffs.string
+
+func pDebuffCount()
+  return foe.debuffs.count
+
+func pDebuffList()
+  return foe.debuffs.string
+
+func pBuffOldest()
+ return buffs.oldest
+
+func pDebuffOldest()
+ return debuffs.oldest
+
+//return func reference
+
+func pBuffGetCount()
+  return buffs.GetCount
+
+func pBuffGetTime()
+  return buffs.GetTime
+
+func pDebuffGetCount()
+  return debuffs.GetCount
+
+func pDebuffGetTime()
+  return debuffs.GetTime
+
+//AI
+
+func AIEnabled()
+ return ai.enabled
+
+func AIPaused()
+ return ai.paused
+
+func AIIdle()
+ return ai.idle
+
+func AIWalking()
+ return ai.walking
+
+//screen
+
+func Screen()
+ return screen.i
+

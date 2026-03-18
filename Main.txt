@@ -1,0 +1,81 @@
+// Cosmetics ================================== \\
+import Scripts/Cosmetics/Hat
+
+// UI Test
+import Scripts/UI/Test
+
+// Display Info =============================== \\
+//?loc ! "uulaa_shop" & loc ! "undead_crypt_intro"
+ //import Scripts/Info/Time
+ //?loc.stars = 5 | loc.stars = 10
+  //import Scripts/Info/GPInfo
+ 
+
+//===========================
+
+ var loop = 0
+ ?loc.loop
+  loop++
+
+ >`25,26,#00ccff,Loops:@loop@
+
+// Utilities ================================== \\
+var f = import Scripts/Utilities/Funcs
+
+var i = import Scripts/Utilities/GameInfo
+
+// AAC ======================================== \\
+import Scripts/Utilities/AAC
+
+
+// Locs ======================================= \\
+// ?loc.stars > 10
+//  var trytopot = false
+//  ?pickup=＂treasure＂
+//   trytopot = true
+//  :?trytopot & item.potion!＂empty＂
+//   trytopot = false
+//   activate P
+
+//
+
+var lastLoc = ""
+var map
+var level
+
+?!level | lastLoc ! loc
+ loadLevel()
+level(f,i)
+
+func loadLevel()
+ ?loc="rocky"
+  map=import Scripts/Loc/RockyPlateau
+ :?loc="deadwood"
+  map=import Scripts/Loc/DeadWood
+ :?loc="forest"
+  map=import Scripts/Loc/FungusForest
+ :?loc="caves"
+  map=import Scripts/Loc/Caves
+ :?loc="crypt"
+  map=import Scripts/Loc/Crypt
+ :?loc="mine"
+  map=import Scripts/Loc/Mine
+ :?loc="icy"
+  map=import Scripts/Loc/Icy
+ :?loc="temple"
+  map=import Scripts/Loc/Temple
+ : //default map
+  map=import Scripts/Loc/Deadwood
+ 
+ lastLoc = loc
+
+ ?loc.stars<6
+  level=map.White
+ :?loc.stars<11
+  level=map.Cyan
+ :?loc.stars<16
+  level=map.Yellow
+ :?loc.stars<21
+  level=map.Green
+ return
+

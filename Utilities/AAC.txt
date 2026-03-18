@@ -1,0 +1,25 @@
+/* 
+AAC (Attack Animation Cancel)
+Mejora la velocidad de ataque cancelando animaciones innecesarias de las armas
+*/
+
+//AAC
+/*
+var aacItems=［"triskelion","dash *0 +0"］
+?item.right.state=3
+ ?item.left.state=-1
+  equipR @aacItems[time%2]@
+  equip @item.right@
+ :
+  equipR @aacItems[0]@
+  equipR @item.right@
+?item.left.state=3
+ equipL @aacItems[1]@
+ equipL @item.left@
+*/
+?item.left.state = 3
+ equipL *0 wand //trash
+ equipL @item.left@
+?item.right.state = 3
+ equipR *0 shield //trash
+ equip @item.right@

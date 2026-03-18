@@ -1,0 +1,202 @@
+/* 
+Script para la ubicación 
+*/
+
+//
+/* EQUIPO
+Trisk - 2gp
+Star - 3gp
+
+Quarterstaff *0 +0 - 1gp
+Compound *3 +0 - 4gp
+Staff Fire *11 +21 - 53gp
+Blade +11 *8 - 51gp //smite dmg
+Mask *8 +0 - 29gp
+Dash *0 +0 - 1gp
+Ice Sword dI *0 +0 - 1gp
+Ice Shield ia *0 +0 - 1gp
+
+*/
+
+var delay = 0
+
+func White(f,i)
+ //>`0,11,delay:@delay@
+ ?loc.loop
+  delay = 0
+
+ ?loc.begin
+  brew wood + bronze
+  equipR ice shield ia *0 +0
+  return
+
+ ?foe.distance > 13 & screen.i ! 2
+  equipL trisk
+
+ f.Quarterstaff()
+
+ ?pickup.distance < 10
+  equipR star
+ :
+  ?foe.distance < 11
+   equipR ice shield ia *0 +0
+ 
+ ?foe.distance > 11
+  ?screen.i = 2 & foe.count > 4 & item.GetCooldown(＂dash＂) <= 0
+   equipL triskelion
+  :?screen.i = 2 & foe.count < 4 & item.GetCooldown(＂dash＂) <= 0
+   equipL triskelion
+
+ ?foe.distance < 19 & foe.distance > 10
+  ?item.GetCooldown(＂dash＂) <= 0
+   equipR dashing *0 +0
+  :?item.GetCooldown(＂bash＂) <= 0 & screen.i = 3
+   equipR bash
+
+ ?screen.i = 2 & foe.distance < 11
+  screen.Previous()
+  delay++
+  ?delay = 3
+   f.Blade(false)
+ ?item.GetCooldown("blade") > 0
+  screen.ResetOffset()
+
+//  ?(screen.i = 2 | screen.i = 3) & foe.distance < 10
+//   //screen.Next()
+//   activate P
+
+ f.LongRangeSpit(338)
+
+ ?screen.i = 1
+  ?foe.distance < 19
+   activate P
+  ?foe.distance < 11
+   f.HammerC("*1 +9")
+
+ ?screen.i = 2 & foe.count < 4
+  ?foe.distance < 5
+   equip heavy_hammer
+  :
+   equipL triskelion
+
+
+
+/*
+ ?loc.begin
+  brew bronze
+  equipR ice shield ia *0 +0
+  return
+
+ ?foe.distance > 13
+  equipL trisk
+
+ f.Quarterstaff()
+
+
+ ?pickup.distance < 10
+  equipR star
+ :
+  ?foe.distance < 11
+   equipR ice shield ia *0 +0
+ 
+ ?foe.distance < 18 & foe.distance > 10
+  equipR dash *0 +0
+
+ ?foe.distance < 45 & screen.i = 1
+  screen.Next()
+ ?foe.distance < 10
+  f.Blade(false)
+
+ ?(screen.i = 2 | screen.i = 3) & foe.distance < 10
+  //screen.Next()
+  activate P
+
+ f.LongRangeSpit(340)
+ 
+ ?foe.distance < 11
+  equipL triskelion
+  equipR ice shield ia *0 +0
+
+*/
+
+//
+func Cyan(f,i)
+ return
+//  ?loc.begin
+//   brew stone + bronze
+//   equipL trisk
+//   equipR compound
+//   return
+// /*
+//  ?f.Staff("fire")
+//   return
+// */
+//  f.Quarterstaff()
+ 
+//  ?pickup.distance < 10
+//   equipR star
+ 
+//  :?foe.distance > 10 & foe.distance < 16
+//   equipL trisk
+//   equipR dash
+
+//  :?foe.distance > 16
+//   equipL trisk
+//   equipR compound
+
+//  :?foe.distance < 11
+//   ?foe = immune_to_ranged
+//    equip heavy hammer
+//   :
+//    equip ice crossbow
+//   ?foe = tree
+//    activate p
+//   ?foe = poena
+//    f.Bardiche()
+
+//
+func Yellow(f,i)
+
+ ?totaltime > 500
+  loc.Leave()
+
+
+//  ?pos.x > 877
+//   loc.Pause()
+
+ ?pos.z!19 & !pickup & totaltime > 100
+  loc.Leave()
+
+//  ?totaltime > 75 & pos.x < 800
+//   loc.Leave()
+
+ ?screen.i = 0 & f.Blade(true)
+  return
+
+ ?debuffs.string ! weapon_swap_lock
+  ?pickup.distance <= 20
+    equipL quest
+    equipR star
+  :
+    equipR quest
+    equipL trisk
+
+ ?totaltime = 1
+  equip ice staff hidden
+ ?screen.i = 0
+  equip ice staff hidden
+  ?totaltime > 1
+   activate R
+   return
+
+
+/*
+:?screen.i = 0 & foe.distance < 9999
+ screen.Next()
+ ?totaltime > 17
+  equip blade
+  activate R
+//
+func Green(f,i)
+ return
+

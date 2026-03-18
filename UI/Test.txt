@@ -1,0 +1,448 @@
+//colors
+var panel_color = #0085b9 //#8888FF
+var text_color = #00ccff //#8888FF
+var hover_color = #00666d //#5555DD
+var selected_text_color = #43d400
+
+//margin
+var margin = 1
+
+var options = 6
+
+//buttons consts
+
+// text
+var open_text_btn = "▼ Info. ▼"
+var close_text_btn = "═╡▲ ▲ ▲╞═"
+var tab_btn_text = "TAB 1"
+
+//button 1
+// size
+var primary_btn_w = 9
+var primary_btn_h = 3
+
+//button 2
+// size
+var secundary_btn_w = 9
+var secundary_btn_h = 1
+
+//button tabs
+//size
+var tab_btn_w = 7
+var tab_btn_h = 1
+// text
+
+//panel size
+var pw = screen.w
+var ph = 11
+
+var sub_panel_w = secundary_btn_w + margin * 2
+var sub_panel_h = secundary_btn_h * options + margin * 2
+
+
+//segment width
+var segment_w = (pw / 3) - margin*2
+
+//Data Keys
+//Primary UI visibility
+var primary_ui_data_key = storage.Get("primary_ui", false)
+var primary_button_data_key = storage.Get("primary_button", true)
+
+//Text data to show
+var text_1_data_key = storage.Get("text_1_id", 0)
+var text_2_data_key = storage.Get("text_2_id", 1)
+var text_3_data_key = storage.Get("text_3_id", 2)
+
+//=================================================
+
+func create_panel(visible, p_color, width, height, x, y, anchor, style, parent)
+ var p
+ p = ui.AddPanel()
+ p.visible = visible
+ p.color = p_color
+ p.w = width
+ p.h = height
+ p.x = x
+ p.y = y
+ p.style = style
+ p.anchor = anchor
+ //p.clip = true
+ ?parent
+  parent.Add(p)
+ return p
+
+func create_text(width, height, x, y, anchor, dock, parent)
+ var t
+ t = ui.AddText()
+ t.w = width
+ t.h = height
+ t.x = x
+ t.y = y
+ t.anchor = anchor
+ t.dock = dock
+ ?parent
+  parent.Add(t)
+ return t
+
+func create_button(visible, width, height, x, y, anchor, dock, text, t_color, b_color, h_color, style, parent, on_press)
+ var b
+ b = ui.AddButton()
+ b.w = width
+ b.h = height
+ b.x = x
+ b.y = y
+ b.anchor = anchor
+ b.dock = dock
+ b.text = text
+ b.tcolor = t_color
+ b.bcolor = b_color
+ b.hcolor = h_color
+ b.style = style
+ ?visible ! null
+  b.visible = visible
+ ?parent
+  parent.Add(b)
+ ?on_press
+  b.SetPressed(on_press)
+ return b
+
+var panel
+var sub_panel
+
+var text_one
+var text_two
+var text_three
+
+var primary_button
+var close_button
+
+var popup_button_left
+var popup_button_right
+var popup_button_center
+
+var last_popup_button
+
+var sub_panel_options = []
+var sub_panel_option_texts = ["General","Player","Foe","Time","Foe B/D","Piedras"]
+
+func open_panel(btn)
+   play key_drop
+   btn.visible = !btn.visible
+   panel.visible = !panel.visible
+   sub_panel.visible = false
+   storage.Set("primary_ui", panel.visible)
+   storage.Set("primary_button", btn.visible)
+
+func close_panel()
+   play key_drop
+   primary_button.visible = !primary_button.visible
+   panel.visible = !panel.visible
+   sub_panel.visible = inherit
+   storage.Set("primary_ui", panel.visible)
+   storage.Set("primary_button", primary_button.visible)
+
+func press_popup_button(btn)
+   play key_drop
+   //Implement popup functionality here
+   var anchor
+   var dock
+   var x
+
+   ?btn = popup_button_left
+    anchor = center_center
+    dock = center_left
+    x = segment_w/2 + margin * 2
+    update_selected_option(text_1_data_key)
+   :?btn = popup_button_center
+    anchor = center_center
+    dock = center_center
+    x = 0
+    update_selected_option(text_2_data_key)
+   :?btn = popup_button_right
+    anchor = center_center
+    dock = center_right
+    x = -segment_w/2 - margin * 2
+    update_selected_option(text_3_data_key)
+
+   ?last_popup_button = btn
+    sub_panel.visible = !sub_panel.visible
+   :
+    last_popup_button = btn
+    sub_panel.visible = true
+    sub_panel.anchor = anchor
+    sub_panel.dock = dock
+    sub_panel.x = x
+    
+func update_selected_option(index)
+   for i = 0..options - 1
+    ?i = index
+     sub_panel_options[i].tcolor = selected_text_color
+    :
+     sub_panel_options[i].tcolor = text_color
+
+func press_option_button(btn)
+   play key_drop
+   //Implement option button functionality here
+   btn.hcolor = color.Random()
+   btn.tcolor = color.Random()
+   var index = sub_panel_options.IndexOf(btn)
+   ?last_popup_button = popup_button_left
+    text_1_data_key = index
+    popup_button_left.text = sub_panel_option_texts[index]
+    storage.Set("text_1_id", index)
+   ?last_popup_button = popup_button_center
+    text_2_data_key = index
+    popup_button_center.text = sub_panel_option_texts[index]
+    storage.Set("text_2_id", index)
+   ?last_popup_button = popup_button_right
+    text_3_data_key = index
+    popup_button_right.text = sub_panel_option_texts[index]
+    storage.Set("text_3_id", index)
+   sub_panel.visible = false
+
+func create_ui_components()
+   panel = create_panel(primary_ui_data_key, panel_color, pw, ph, 0, -margin, bottom_center, 3, null)
+   //panel texts
+   text_one = create_text(segment_w, ph, margin * 2, margin, center_left, center_left, panel)
+   text_two = create_text(segment_w, ph, 0, margin, center_center, center_center, panel)
+   text_three = create_text(segment_w, ph, -margin * 2, margin, center_right, center_right, panel)
+
+   sub_panel = create_panel(false, panel_color, sub_panel_w, sub_panel_h, 0, ph-margin*2, center_center, 2, panel)
+   //In panel buttons and texts
+
+   //Buttons
+   close_button = create_button(
+      ^null, 
+      ^secundary_btn_w, secundary_btn_h, 
+      ^0, 0, 
+      ^top_center, top_center, 
+      ^close_text_btn, 
+      ^panel_color, panel_color, hover_color, 
+      ^0, panel, close_panel)
+
+   //Popup panel button
+   //left button
+   popup_button_left = create_button(
+      ^null,
+      ^7, 1,
+      ^segment_w/2 - margin, 0, 
+      ^bottom_left, bottom_left, 
+      ^sub_panel_option_texts[text_1_data_key], 
+      ^panel_color, panel_color, hover_color, 
+      ^0, panel, press_popup_button)
+   //center button
+   popup_button_center = create_button(
+      ^null,
+      ^7, 1, 
+      ^0, 0, 
+      ^bottom_center, bottom_center, 
+      ^sub_panel_option_texts[text_2_data_key], 
+      ^panel_color, panel_color, hover_color, 
+      ^0, panel, press_popup_button)
+   //right button
+   popup_button_right = create_button(
+      ^null,
+      ^7, 1, 
+      ^-segment_w/2 + margin * 2, 0, 
+      ^bottom_right, bottom_right, 
+      ^sub_panel_option_texts[text_3_data_key], 
+      ^panel_color, panel_color, hover_color, 
+      ^0, panel, press_popup_button)
+
+   //set options for sub panel
+   for i = 1..options
+    var option_button = create_button(
+      ^null, 
+      ^secundary_btn_w, secundary_btn_h, 
+      ^0, margin + (secundary_btn_h * (i - 1)), 
+      ^top_center, top_center, 
+      ^sub_panel_option_texts[i-1], 
+      ^panel_color, panel_color, hover_color, 
+      ^0, sub_panel, press_option_button)
+    sub_panel_options.Add(option_button)
+
+   //Principal Button (open panel)
+   primary_button = create_button(
+      ^primary_button_data_key, 
+      ^primary_btn_w, primary_btn_h, 
+      ^0, margin, 
+      ^top_center, top_center, 
+      ^open_text_btn, 
+      ^panel_color, panel_color, hover_color, 
+      ^4, null, open_panel)
+
+// ==================================================
+
+func get_dificult_color()
+ var c
+ ?loc.stars > 15
+  c = green
+ :?loc.stars > 10
+  c = yellow
+ :?loc.stars > 5
+  c = cyan
+ :
+  c = white
+ return c
+
+func get_foe_element()
+ var element
+ ?foe = "poison"
+  element = "Poison"
+ :?foe = "vigor"
+  element = "Vigor"
+ :?foe = "ice"
+  element = "Ice"
+ :?foe = "aether"
+  element = "Aether"
+ :?foe = "fire"
+  element = "Fire"
+ :
+    element = " "
+
+ return element
+
+func get_color_by_limit(limit)
+ var good = #12ff34
+ var bad = #ff3412
+ var t = math.Min(loc.gp/limit, 1.0)
+ var c = color.Lerp(good, bad, t)
+ return c
+
+func get_loc_gp_string()
+ ?loc.stars ! 5 & loc.stars ! 10 & loc.stars ! 15 & loc.stars ! 20
+  return ""
+ var gp_string = "" 
+ var mult = 1.0
+ ?loc = "rocky"
+   mult = 3.0
+
+ ?loc.stars > 10
+  gp_string = " GP: [color="+ #12ff34 +"]"+loc.gp+"[/color]/inf"
+  return gp_string
+ :
+  ?loc.stars = 5
+   gp_string = " GP: [color="+ get_color_by_limit(150.0 * mult) +"]"+loc.gp+"[/color]/"+150*mult
+  :?loc.stars = 10
+   gp_string = " GP: [color="+ get_color_by_limit(200.0 * mult) +"]"+loc.gp+"[/color]/"+200*mult
+  return gp_string
+
+var dificult_color = get_dificult_color()
+
+var segment_draw = "|123456789|123456789|123456xxxx" //27 elements
+
+
+func is_boss()
+ ?foe = "boss"
+  return true
+ :
+  return false
+
+func get_format_string(str)
+ var s = string.Split(str, ",")
+ var s2 = "Non"
+ var format_s = []
+ ?s.Count() = 0
+  return ""
+ for i = 0..s.Count() - 1
+   var temp = string.Split(s[i], ":")
+   ?temp.Count() = 1
+    break
+   var temp1 = [temp[2], temp[0]]
+   var temp2 = [string.Join("", temp1), temp[3]]
+
+   format_s.Add(string.Join(":", temp2))
+   // Cleanup
+   var temp = []
+   var temp1 = []
+   var temp2 = []
+   
+ s2 = string.Join(" ", format_s)
+ return s2
+
+func get_bd_string(str,f)
+ ?str = "B"
+   ?f
+    ?foe.buffs.string
+     return "\nBuffs:"+ str_color(get_format_string(foe.buffs.string), #c70000)
+   :
+    ?buffs.string
+     return "\nBuffs:"+ str_color(get_format_string(buffs.string), #00c72b)
+   return ""
+ :?str = "D"
+   ?f
+    ?foe.debuffs.string
+     return "\nDebuffs:"+ str_color(get_format_string(foe.debuffs.string), #00c72b)
+   :
+    ?debuffs.string
+     return "\nDebuffs:"+ str_color(get_format_string(debuffs.string), #c70000)
+   return ""
+
+func str_color(text, color_code)
+   return "[color="+ color_code +"]"+text+"[/color]"
+
+//=================================================
+
+func get_info_text(category_id)
+   ?category_id = 0
+    return "Loc: "+str_color(loc.id + " ☆" + loc.stars, dificult_color)+
+    ^"\nCurr Time: " + str_color(time.FormatDigital(totaltime, true), #yellow)+
+    ^"\nBest Time: " + str_color(time.FormatDigital(loc.bestTime, true), #green)+
+    ^"\nAvrg Time: " + str_color(time.FormatDigital(loc.averageTime, true), #cyan)+
+    ^"\nTreasures: " + str_color(item.GetTreasureCount()+"/"+item.GetTreasureLimit(), #yellow)+
+    ^"\nQuest: " + str_color(loc.isQuest, #12d4ff) + get_loc_gp_string() +
+    ^"\nPotion: " + str_color(item.potion, #ff3412)+
+    ^"\nName: " + str_color(player.name, #22FFcc)
+   :?category_id = 1
+    return "X:"+ str_color(pos.x, #22FFcc)+ " Y:"+ str_color(pos.y, #ff3412)+ " Z:"+ str_color(pos.z, #12d4ff)+
+    ^"\nEnable:"+ str_color(ai.enabled, #3412ff)+" Idle:"+ str_color(ai.idle, #ff12ff)+
+    ^"\nWalking:"+ str_color(ai.walking, #3412ff)+" Paused:"+ str_color(ai.paused, #ff12ff)+
+    ^"\nHealth:"+ str_color(hp+"/"+maxhp, #12ff34)+" Armor:"+ str_color(armor+"."+armor.f+"/"+maxarmor, #ffde12)+
+    ^get_bd_string("B", false)+
+    ^get_bd_string("D", false)
+   :?category_id = 2
+    return "Name: "+ str_color(foe.id, #22FFcc)+
+    ^"\nDist: "+ str_color(foe.distance, #ff3412)+" Z: "+ str_color(foe.z, #12d4ff)+
+    ^"\nHealth: "+ str_color(foe.hp, #12ff34)+" Armor: "+ str_color(foe.armor, #ffde12)+
+    ^"\nState: "+ str_color(foe.state, #3412ff)+" Time: "+ str_color(foe.time, #ff12ff)+
+    ^"\nDamage: "+ str_color(foe.damage, #661c2b)+" Count: "+ str_color(foe.count, #2b661c)+
+    ^"\nElement: "+ str_color(get_foe_element(), #3550bb) + 
+    ^"\nElite: "+ str_color(encounter.isElite, #ff6612)+" Boss: "+ str_color(is_boss(), #6612ff)+
+    ^"\nMod: "+ str_color(encounter.eliteMod, #12ff66)
+    //^"[color="+ #22FFcc +"]\n"+segment_draw+"[/color]"
+   :?category_id = 3
+      return "Soulmy viajando por las tierras de Stone Story, buscando aventuras y tesoros ocultos. "+
+      ^"\nEn su camino, ha enfrentado numerosos desafíos y ha conocido a personajes fascinantes."+
+      ^"\nTime: "+totalTime
+   :?category_id = 4
+    return "Foe buffs/debuffs"+
+    ^get_bd_string("B", true)+
+    ^get_bd_string("D", true)
+   :?category_id = 5
+    return "Cooldown items."+
+    ^"\nBash: "+ item.GetCooldown("bash")+
+    ^"\nDash: "+ item.GetCooldown("dash")+
+    ^"\nBard: "+ item.GetCooldown("bardiche")+
+    ^"\nHam: "+ item.GetCooldown("heavy_hammer")+
+    ^"\nBlade: "+ item.GetCooldown("blade")+
+    ^"\nmask: "+ item.GetCooldown("mask")+
+    ^"\nMind: "+ item.GetCooldown("mind")
+   :
+    return "No info available."
+
+
+var createUI
+?totalTime = 1
+ createUI = create_ui_components()
+
+var a
+var b
+var c
+
+a = get_info_text(text_1_data_key)
+b = get_info_text(text_2_data_key)
+c = get_info_text(text_3_data_key)
+
+text_one.text = a
+text_two.text = b
+text_three.text = c

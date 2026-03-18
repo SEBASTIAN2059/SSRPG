@@ -1,0 +1,32 @@
+/* 
+Muestra información del uso de Gear Power y lo limites de cada zona y dificultad
+*/
+
+var limits = [
+  ["rocky_plateau", [[5, 450], [10, 600]]],
+  ["all", [[5, 150], [10, 200]]]
+]
+
+var limit = "--"
+
+for x:limits
+ ?x[0]=loc.id
+  for i = 0..x[1].Count() - 1
+   ?x[1][i][0] = loc.stars
+    limit = x[1][i][1]
+ ?x[0]="all"
+  for i = 0..x[1].Count() - 1
+   ?x[1][i][0] = loc.stars
+    limit = x[1][i][1]
+
+var color = #white
+?limit ! "--"
+ ?loc.gp < limit
+  color = #green
+ :
+  color = #red
+
+// Print
+>`0,24,#ffcc00,GP:
+>`3,24,@color@,@loc.gp@/@limit@
+

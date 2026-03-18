@@ -1,0 +1,152 @@
+// ===== HEAD CUSTOM ===== \\
+
+// Duracion de cada frame 
+var f_duration = 3
+
+// Total frames de la animacion
+var f_count = 4
+
+var t
+t = (time / f_duration) % f_count
+
+// ===== BODY CUSTOM ===== \\
+// var size_x = 5
+// var size_y = 3
+// //cruzt de fondo
+// draw.Bg(screen.FromWorldX(pos.x), pos.z-size_y-2, #1100ff, 1, 3)
+// draw.Bg(screen.FromWorldX(pos.x-2), pos.z-size_y-1, #00ff00, 5, 1)
+
+// draw.Bg(screen.FromWorldX(pos.x-1), pos.z-size_y-1, #ff0000, 3, 1)
+
+//To do: crear particulas que queden en aire (humo, chispas, etc)
+//>o-0,0,#red,Let's go!
+
+
+?t=0
+ >h-3,-3,#rainbow,ascii
+###
+##' 
+#.___`
+asciiend
+
+?t=1
+ >h-3,-3,#rainbow,ascii
+###.
+##  .
+#(___
+asciiend
+
+?t=2
+ >h-3,-3,#rainbow,ascii
+###
+##  '
+#´_'_,
+asciiend
+
+?t=3
+ >h-3,-3,#rainbow,ascii
+###
+##,.  
+# ___)
+asciiend
+
+/*
+>h-2,-2,#ffcc00,ascii
+_   _
+|\_/|
+( ##)
+ `•´
+asciiend
+*/
+/*
+// oro apagado #957029
+// brillo medio #ffd657
+// mucho #feef64
+>h-3,-3,#957029,ascii
+##╔═╗
+##║¤║
+‗‗░▓░‗‗
+asciiend
+var frames = 7
+?time / frames % frames = 0
+ >h-0,-2,#ff0000,¤
+:?time / frames % frames = 1
+ >h-0,-2,#ff7800,¤
+:?time / frames % frames = 2
+ >h-0,-2,#ffff00,¤
+:?time / frames % frames = 3
+ >h-0,-2,#00ff00,¤
+:?time / frames % frames = 4
+ >h-0,-2,#00ff78,¤
+:?time / frames % frames = 5
+ >h-0,-2,#00ffff,¤
+:?time / frames % frames = 6
+ >h-0,-2,#0000ff,¤
+:?time / frames % frames = 7
+ >h-0,-2,#7800ff,¤
+:?time / frames % frames = 8
+ >h-0,-2,#ff00ff,¤
+:?time / frames % frames = 9
+ >h-0,-2,#ff0000,¤
+*/
+/*
+var animationFrames = [ascii
+───┼
+  O/
+ /|
+ / \
+asciiend
+^,ascii
+───┼
+  O/
+ /|
+ / \
+asciiend
+^,ascii
+───┼
+  O/
+ /|
+ / \
+asciiend
+^,ascii
+   ---.
+  O    \
+ /|\┼───
+ / \
+asciiend
+^,ascii
+   ---.
+  O    \
+ /|\┼───
+ / \
+asciiend
+^,ascii
+   ---.
+  O    \
+ /|\┼───
+ / \
+asciiend
+^,ascii
+   ---.
+  O    \
+ /|\┼───
+ / \
+asciiend
+^]
+
+var count
+var value
+var i = 0
+
+count = animationFrames.Count()
+
+?i < count
+ value = animationFrames[i]
+ >`15,15,@value@
+ i++
+
+:
+ i = 0
+
+>`15,16,@i@
+*/

@@ -1,0 +1,38 @@
+/* 
+Script para la ubicación 
+*/
+
+//
+func White(f,i)
+ return
+//
+func Cyan(f,i)
+ return
+//
+func Yellow(f,i)
+ ?loc.begin
+  brew wood + bronze
+  equipL trisk
+  equipR compound max
+ ?screen.i = 0 & f.Blade(true)
+  return
+ ?screen.i = 0
+  equip ice staff hidden
+  ?totaltime > 1
+   activate R
+ ?loc = crypt
+  equipL trisk
+  equipR compound max
+ ?foe = boss
+  ?foe.distance < 24
+   equip vigor crossbow
+   activate P
+  ?foe.count = 0
+   equipL trisk
+   ?pickup
+    equipR star
+   :
+    equipR compound max
+//
+func Green(f,i)
+ return

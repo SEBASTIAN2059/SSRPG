@@ -1,0 +1,97 @@
+/* 
+Script para la ubicación Cuevas del Terror
+*/
+
+
+// 5 STARS
+/*
+compound *3 +0          4
+qstaff *0 +0            1
+aether talisman *6 +0   27
+staff fire *10 +16      43
+Blade *9 +4             38
+Mask *9 +0              30
+dash *0 +0              1
+ice shield *0 +0        1
+Triskel                 2
+
+*/
+
+func White(f,i)
+ ?loc.begin
+  equipR compound *3 +0
+  brew bronze
+  return
+
+ ?totaltime > 15
+  ?f.AetherTalisman(true)
+   return
+ 
+ f.Quarterstaff()
+ 
+ f.LongRangeSpit(274)
+ 
+ ?foe.distance < 15 & item.GetCooldown(＂staff_fire＂) > 0
+  activate voidweaver
+ ?foe.distance < 35 & f.Blade(true)
+  return
+ 
+ ?foe.distance > 17
+  equipR torch //compound *3 +0
+  equipL trisk
+ :?foe.distance > 15
+  equipR dash *0 +0
+
+ ?screen.i = 2
+  screen.Next()
+
+ ?foe.count <= 2 & foe.distance < 16
+  activate P
+ 
+ ?f.Staff(＂fire＂)
+  return
+
+ ?pickup.distance < 10
+  equipR star
+/*
+ ?screen.i = 4
+  loc.Leave()
+*/
+//
+func Cyan(f,i)
+ equipL hook
+ equipR vigor sword
+ ?foe=boss & foe!acronian
+  equip crossbow ice
+/*
+ equip ice crossbow
+ ?foe.distance > 16
+  equipL trisk
+  equipR compound
+ ?foe = inmune_to_ranged
+  equip Blade
+*/
+//
+func Yellow(f,i)
+ ?loc.begin
+  brew wood + bronze
+  equipL trisk
+  equipR compound max
+ 
+//  ?screen.i ! 0 & item.GetCooldown("staff_ice") <= 0
+//   activate R
+//   >si... @item.GetCooldown("staff_ice")@
+//   return
+//  ?screen.i = 0 & f.Blade(true)
+//   return
+ ?screen.i > 10
+  ?f.Staff("fire")
+   return
+ ?screen.i = 0 & foe.count = 0 & foe.distance = 9999
+  equip eternity
+  ?totaltime > 1
+   activate R
+//
+func Green(f,i)
+ return
+

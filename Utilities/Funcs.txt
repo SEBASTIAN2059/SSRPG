@@ -1,0 +1,170 @@
+/* 
+Este script contiene diversas funciones para utilizar armas, o realizar técnicas que
+permiten mejorar el combate
+*/
+
+// Tecnicas
+
+func Moondial(w1,w2)
+ ?totaltime%3=0
+  equipL moon
+  equipR @w1@
+ :?totaltime%3=1
+  equipL moon
+  equipR @w2@
+ :?totaltime%3=2
+  equipR @w1@
+  equipL @w2@
+
+
+func LongRangeSpit(x)
+ ?screen.i=(x-34)/69 &
+ ^item.GetCooldown(＂mask＂)=0
+
+  ?screen.FromWorldX(x)<69
+   Mask()
+   screen.ResetOffset()
+  :
+   screen.Next()
+
+
+func Exec(k,v)
+ ?item.CanActivate() & (item.GetCooldown(k)<=0
+ ^| item.right = v & item.right.state = 2)
+  equip @v@
+  activate R
+  return True
+ return False
+
+func Exec2(k, v, lvl)
+ ?item.CanActivate() & (item.GetCooldown(k)<=0
+ ^| item.right = v & item.right.state = 2)
+  equip @v@ @lvl@
+  activate R
+  return True
+ return False
+
+func Bardiche()
+ return Exec(＂bardiche＂,＂bardiche＂)
+
+func Hammer()
+ return Exec(＂heavy_hammer＂,＂heavy_hammer＂)
+
+func BardicheC(lvl)
+ return Exec2(＂bardiche＂, "bardiche", lvl)
+
+func HammerC(lvl)
+ return Exec2(＂heavy_hammer＂, "heavy_hammer", lvl)
+
+
+
+// Habilidades no interrumpibles
+
+// BLADE
+var waitToBlade = 0
+
+func Blade(next)
+ ?item.GetCooldown(＂blade＂) <= 0 & item.CanActivate()
+  ?next
+   waitToBlade++
+   screen.Next()
+   ?waitToBlade>18
+    equip blade
+    activate R
+    screen.ResetOffset()
+    waitToBlade=0
+  :
+   equip blade
+   activate R
+  return true
+ return false
+
+// MASK
+func Mask()
+ ?item.GetCooldown(＂mask＂) <= 0 & item.CanActivate()
+  equipL moon
+  equipR mask
+  activate R
+  return true
+ return false
+
+// QUARTERSTAFF
+func Quarterstaff()
+ ?item.GetCooldown(＂quarterstaff＂) <= 0 & item.CanActivate()
+  equip quarterstaff *0 +0
+  activate R
+  return true
+ return false
+
+// MIND
+func Mind()
+ ?item.GetCooldown(＂mind＂) <= 0
+  equip mind
+  return true
+ return false
+
+// ===== TALISMANS ===== \\
+func FireTalisman(x)
+ return Talisman(
+ ^＂fire_talisman＂,＂cinderwisp＂,x)
+
+func AetherTalisman(x)
+ return Talisman(
+ ^＂aether_talisman＂,＂voidweaver＂,x)
+
+func Talisman(name,s,x)
+ ?(summon.GetId()!s)=x
+  equipR @name@
+  equipl trisk
+  ?item.GetCooldown(name)<=0
+   activate R
+  return true
+ return false
+
+func CinderwispByCount(count)
+ ?summon.GetId()=＂cinderwisp＂ 
+ ^& summon.count>0 
+ ^& summon.GetVar(＂ignition＂)>=count
+  activate cinderwisp
+
+// NEW STAFF-WAND HABILITIES
+var elementalItems=［
+^［＂staff＂,＂stone＂,    ［3,false］］,
+^［＂staff＂,＂poison＂,    ［8,false］］,
+^［＂staff＂,＂vigor＂,    ［4,false］］,
+^［＂staff＂,＂aether＂,    ［2,false］］,
+^［＂staff＂,＂fire＂,    ［6,false］］,
+^［＂staff＂,＂ice＂,    ［1,false］］,
+^［＂wand＂,＂stone＂,    ［0,false］］,
+^［＂wand＂,＂poison＂,    ［6,false］］,
+^［＂wand＂,＂vigor＂,    ［1,false］］,
+^［＂wand＂,＂aether＂,    ［14,false］］,
+^［＂wand＂,＂fire＂,    ［4,false］］,
+^［＂wand＂,＂ice＂,        ［3,false］］,
+］
+ 
+func Staff(e)
+ return Elemental(＂staff＂,e)
+
+func Wand(e)
+ return Elemental(＂wand＂,e)
+
+func GetElementalData(i,e)
+ for x:elementalItems
+  ?x［0］=i & x［1］=e
+   return x［2］
+ return false
+
+func Elemental(i,e)
+ var x=GetElementalData(i,e)
+ ?x & armor>=x［0］ 
+ ^& item.GetCooldown(i+＂_＂+e)=0 
+ ^& item.CanActivate() 
+ ^& (!x［1］ | foe.distance<20)
+  equip @i+＂_hidden_＂+e@
+  activate r
+  return true
+ return false
+
+
+

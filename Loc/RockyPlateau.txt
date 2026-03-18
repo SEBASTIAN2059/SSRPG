@@ -1,0 +1,268 @@
+/* 
+Script para la ubicación 
+*/
+
+//
+/*
+Bardiche *10 +21/8 (crit/dmg)
+Dashing shield *0 +0
+Blade *9 +21/12 (smite/smite dmg)
+Mask *9 +0
+Elemental sword +21/3 (crit/dps)
+Heavy hammer *10 +0
+
+Aether staff *10 +1
+Fire staff *10 +8
+
+Compound *5 +0
+QStaff *0 +0
+
+Triskel
+Moon
+Star
+*/
+
+var wait = 0
+func White(f,i)
+ ?loc.begin
+  brew wood + bronze
+  equipR compound *5 +0
+ ?pickup.distance < 10 & screen.i ! 2
+  //loc.Leave()
+  equipR star
+ 
+ ?foe.distance > 15 //& screen.i ! 2
+  equipL trisk
+
+ ?screen.i < 2
+  f.Quarterstaff()
+ 
+ //f.Staff("fire")
+ ?screen.i = 2
+  f.Staff("aether")
+  activate P
+/*
+ ?screen.i < 2
+  activate P
+*/ 
+ ?foe = dysangelos
+  ?foe.distance < 28
+   f.Bardiche()
+  
+  ?foe = phase1 & foe.hp < 1
+   wait++
+   ?wait >= 77 & buffs.string = "berserk"
+    ?f.Hammer()
+     return
+   /*:?wait >= 72 & buffs.string ! "berserk"
+    ?f.Hammer()
+     return*/
+
+  :?foe = phase2
+   ?foe.state = 32   
+    ?foe!fire & foe!stone
+     loc.Leave()
+   ?foe=fire
+    f.Blade(false)
+    f.Mask()
+  
+  :?foe = phase3
+   //equip bardiche
+   equipL moon
+   equipR sword D +21/3
+   ?foe.distance > 10
+    f.Quarterstaff()
+    equipL moon
+    equipR dash *0 +0
+    activate P
+
+//
+func Cyan(f,i)
+ //activar mask
+ f.Mask()
+ //imprimir distancia del enemigo
+ >@i.fD()@
+//
+var muerto = 0
+var permapot = false
+func Yellow(f,i)
+ ?loc.loop
+  muerto = 0
+/*
+ // ======= PRINTS ========
+ >`10,6,Lucky:@buffs.GetTime("lucky")@
+ >`10,7,I.R:@item.right@
+ >`10,8,I.L:@item.left@
+ >`10,9,Permapot:@permapot@
+ >`10,10,AI.E:@ai.enabled@ AI.W:@ai.walking@ AI.I:@ai.idle@ AI.P:@ai.paused@
+ >`10,11,HP:@hp@, A:@armor@
+ >`10,12,FS:@foe.state@ FT:@foe.time@ FD:@foe.distance@ FDmg:@foe.damage@
+ */
+ // ===================VARS================== //
+ var igc = item.GetCooldown
+ var fd
+ var ft
+ var fs 
+ fd = foe.distance
+ ft = foe.time
+ fs = foe.state
+
+ // ============EXTRA============
+ disable npcDialog
+
+ //==========BEGIN===============
+ ?loc.begin
+  brew stone + bronze
+  equip trisk
+  equipR compound
+  return
+
+ //=========POT=========
+ ?permapot
+  ?buffs.GetTime("lucky") > 2000
+   permapot = false
+ :
+  ?buffs.GetTime("lucky") < 1000
+   permapot = true
+
+ //==========PERMAPOT RUN=============
+ ?permapot
+  ?item.right = mask
+   activate P
+
+ //=========EQUIPS=======
+
+  equipR mask
+
+ //=========ACRONIAN=============================================
+  ?foe=acronian
+   ?foe.debuffs.GetTime("stun") < 8
+    equipL hook
+   :
+    equipL vigor sword +21/17
+   ?fd > 10 & ai.walking & foe.z = pos.z & fs ! 1
+    equipR dash
+   :
+    equipR mask
+ //===========TRISK=========
+  ?fd < 0
+   equipL trisk
+  :?fd > 8
+   equipL trisk
+
+ //=======PICKUP=============
+  ?pickup.distance < 5
+   equipR star
+ 
+ //=====QUARTERSTAFF=========
+  ?foe.distance > 25
+   f.Quarterstaff()
+
+ //=============DYSANGELOS=================================================
+  ?foe=dysangelos
+   ?fd > 10 & fd < 19 & ai.walking & foe.hp > 0
+    equipR dash
+   :
+    equipR mask
+ //=====PHASE1=================================
+   ?foe=phase1 & fd < 7
+    equipL ice sword di
+  //========PHASE2==============================
+   ?foe=phase2 & fd < 7
+    ?foe=ice & fs = 32 & ft > 45
+     equipL fire sword df
+    :?foe=poison & fs = 32 & ft > 45
+     equipL ice sword di
+    :?foe=vigor & fs = 32 & ft > 45
+     equipL poison sword dp
+    :?foe=aether & fs = 32 & ft > 45
+     equipL vigor sword
+    :?foe=fire & fs = 32 & ft > 45
+     equipL aether sword du
+    :
+     equipL fire sword D
+  //========PHASE3==============================
+   ?foe=phase3 & fd < 7
+    ?foe.debuffs.GetCount("debuff_chill") < 6
+     equipL ice sword di
+    :
+     equipL fire sword D
+     ?hp < (maxhp - 5)
+      equipL vigor sword dl
+ :
+ //==========NORMAL RUN=================================================================================
+ //=========EQUIPS=======
+  ?fd > 18
+   equipR mask
+   equipL trisk
+
+ //=========ACRONIAN=============================================
+  ?foe=acronian
+   ?foe.debuffs.GetTime(＂stun＂) < 8
+    equipL hook
+   :
+    f.Moondial("vigor sword","ice sword")
+
+   ?fd > 10 & ai.walking & foe.z = pos.z & fs ! 1
+    equipR dash
+
+ //===========TRISK=========
+  ?fd < 0
+   equipL trisk
+
+ //=======PICKUP=============
+  ?pickup.distance < 5
+   equipR star
+ 
+ //=====QUARTERSTAFF=========
+  ?foe.distance > 25
+   f.Quarterstaff()
+
+ //=============DYSANGELOS=================================================
+  ?foe=dysangelos
+   ?fd > 10 & fd < 19 & ai.walking & foe.hp > 0
+    equipR dash
+   ?foe=phase2 & fd > 7 & foe.hp < 1
+    equipL quest
+    equipR compound shield
+ //=====PHASE1=================================
+/*
+   ?foe = phase1 & foe.hp < 1
+    >`15,15,#red,@muerto@
+    muerto++
+    ?foe.distance = 14
+     ?item.GetCooldown(＂dash＂) <= 0
+      equipR dash
+     :?item.GetCooldown(＂bash＂) <= 0
+      equipR bash
+
+    ?muerto >= 69
+     f.Bardiche()
+*/
+ //============================================
+   ?foe=phase1 & fd < 7 & foe.hp > 0
+    f.Moondial("vigor sword dl","ice sword di")
+  //========PHASE2==============================
+   :?foe=phase2 & fd < 7
+    ?foe=ice & fs = 32 & ft > 45
+     equipL fire sword df
+    :?foe=poison & fs = 32 & ft > 45
+     equipL ice sword di
+    :?foe=vigor & fs = 32 & ft > 45
+     equipL poison sword dp
+    :?foe=aether & fs = 32 & ft > 45
+     equipL vigor sword
+    :?foe=fire & fs = 32 & ft > 45
+     equipL aether sword du
+    :
+     f.Moondial("vigor sword dl","fire sword")
+  //========PHASE3==============================
+   :?foe=phase3 & fd < 7
+    f.Staff("poison")
+    activate P
+    f.Moondial("vigor sword dl","fire sword")
+
+
+//
+func Green(f,i)
+ return

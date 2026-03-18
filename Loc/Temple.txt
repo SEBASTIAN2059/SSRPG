@@ -1,0 +1,204 @@
+/* 
+Script para la ubicación 
+*/
+
+//
+func White(f,i)
+ ?loc.begin
+  brew wood + bronze
+  return
+
+ ?foe.distance > 24
+  f.Quarterstaff()
+
+ ?foe = boss
+  equip ice staff +21/9
+  activate P
+ :
+  ?foe.distance > 18
+   equipL triskel
+  :?foe.distance < 19 & foe.distance > 10
+   ?item.GetCooldown(＂dash＂) <= 0
+    equipR dashing *0 +0
+   :?item.GetCooldown(＂bash＂) <= 0
+    equipR bash
+
+  :
+   equip ice staff +21/9
+
+ 
+
+//
+func Cyan(f,i)
+ ?loc.begin
+  brew wood + bronze
+  equipR quest
+  return
+
+ ?foe
+  f.Quarterstaff()
+
+ equipL trisk
+  
+ ?foe.distance > 18
+  equipR quest
+
+ :?foe.distance < 19 & foe.distance > 10
+  ?item.GetCooldown(＂dash＂) <= 0
+   equipR dashing *0 +0
+  :?item.GetCooldown(＂bash＂) <= 0
+   equipR bash
+ :
+  equip ice staff +21/16
+
+ ?foe = boss
+  activate P
+
+//
+var loop = 0
+ ?loc.loop
+  loop++
+
+var flag = false
+var enduse = 0
+
+func Yellow(f,i)
+ ?totaltime=1
+  equip ice staff hidden
+ ?loc!"harder" & f.Staff("ice")
+  return
+
+ ?loc = chamber
+  equipL trisk
+  ?buffs.oldest = "buff_staff_berserk"
+   equipR mask
+  :
+   equipR compound max
+ ?foe = nagaraja
+  ?foe.state = 112 & foe.time > 59 & f.Mind()
+   return
+  ?foe.distance < 7
+   f.Moondial("ice sword +21/21 D -shiny","ice sword +21/21 D shiny")
+   ?loop > 0
+    activate P
+  :?foe.distance > 10 & foe.state ! 1
+   ?f.Quarterstaff() & foe.hp = foe.maxhp
+    return
+   :
+    equipL triskelion
+    equipR dash
+   
+  ?foe.count = 0
+   equipL trisk
+   equipR mask
+
+//=======Staff Fire on End===============
+
+ ?loc.loop
+  flag = false
+  enduse = 0
+
+ ?pickup = "treasure"
+  flag = true
+
+ ?flag
+  enduse++
+
+ ?enduse >= 35 & //25
+ ^item.GetCooldown("staff_fire") < 1
+  equip staff_hidden_fire
+  activate R
+  return
+ :?enduse >= 20 & //25
+ ^item.GetCooldown("staff_poison") < 1
+  equip staff_hidden_poison
+  activate R
+  return
+
+ >`0,1,Enduse: @enduse@ Flag: @flag@ Staff: @item.GetCooldown("staff_fire")@
+
+
+//
+func Green(f,i)
+ ?loc.begin
+  equipL trisk
+  equipR compound max
+  return
+ ?item.GetCooldown("staff_stone") <= 0
+  equip stone staff hidden
+  ?totaltime > 1
+   activate R
+  return
+ ?f.Mind()
+  return
+ ?screen.i = 0 & f.Blade(true)
+  return
+//  :?screen.i = 0 & pos.x < -20
+//   equip ice staff hidden
+//   ?totaltime > 1
+//    activate R
+ 
+//  ?loc = chamber
+//   equipL trisk
+//   equipR compound max
+//  ?foe = nagaraja
+//   ?foe.distance < 24
+//    equip poison crossbow
+//    activate P
+//   ?foe.count = 0
+//    equipL trisk
+//    ?pickup
+//     equipR star
+//    :
+//     equipR compound max
+
+
+/*
+Nagaraja Cheat Code
+by Yu, the Second Person (A_Lol)
+Instructions:
+- Place this code below all your other code.
+- DO NOT INTERRUPT THE EQUIPS
+- DO NOT PAUSE WHILE THERE'S A SPIT ON-SCREEN
+
+var incomingSpit = -1 // stores ETA of spit
+var incomingSpit2 = -1 // in case chill fails
+?foe.id = “nagaraja”
+ // Nagaraja just spat
+ ?foe.state=31|(foe.state=33&foe.time=0)
+  // there is already another spit in the air
+  ?incomingSpit > totaltime
+   incomingSpit2 = totaltime + 25
+  :
+   incomingSpit = totaltime + 25
+ // avoid brick and give space for walking
+ ?foe.distance <= 10 &
+ ^item.GetCooldown(“mind”) <= 0
+  equipL mind
+  equipR mask
+ // there is a spit in the air
+ :?incomingSpit > totaltime
+  // impact imminent, walk forward 2 steps
+  ?incomingSpit - totaltime <= 5
+   ?incomingSpit = totaltime + 5
+    equipL quest
+    equipR shield -ash
+   :
+    equipL tri
+    equipR sword
+  // waiting for spit to get closer
+  :
+   equipL quest
+   equipR shield -ash
+ :?foe.state = 105
+  equipL quest
+  equipR crossbow *0 +0
+ :
+  equipL quest
+  equipR shield -ash
+ // a spit just landed,
+ //handle next spit (if any)
+ ?incomingSpit = totaltime
+ ^&incomingSpit2 > incomingSpit
+  incomingSpit = incomingSpit2
+*/

@@ -1,0 +1,518 @@
+/* 
+Script para la ubicación 
+*/
+
+//
+var hongo = 0
+var faseuno = false
+func White(f,i)
+ ?loc.begin
+  brew wood + bronze
+  equipL triskel
+  equipR compound 4 +0
+  return
+ >@i.f_d()@
+ ?screen.i = 7
+  hongo++
+
+ ?pickup.distance < 20
+  equipR star_stone
+
+  
+ ?loc ! ＂Angry Shroom＂
+  ?f.Quarterstaff()
+   return
+
+ ?hongo > 60
+  >STAFF
+  f.Staff(＂fire＂)
+ ?totaltime > 10
+  ?f.AetherTalisman(true)
+   return
+  
+ ?foe.distance < 10 & screen.i = 7
+  activate voidweaver
+
+ ?foe.distance > 22
+  equipL triskel
+  ?!pickup
+   equipR compound 4 +0
+
+ :?foe.distance > 10 & foe!boss
+  ?item.GetCooldown(＂dash＂) <= 0
+   equipR dashing *0 +0
+ /* :?item.GetCooldown(＂bash＂) <= 0
+   equipR bash*/
+ :
+  ?foe.id = mushroom_boss_fat
+   equipL aether sword long +16
+   ?foe.distance > 15
+    ?item.GetCooldown(＂dash＂) <= 0
+     equipR dashing *0 +0
+
+  :?foe.id = mushroom_boss_skinny
+   equipL aether sword long +16
+    
+  //PHASE 1
+  :?foe.id = mushroom_boss
+   activate P
+
+   equip aether sword long +16
+   ?foe.state = 32 & foe.time = 48
+    f.Mind()
+  :
+   ?foe.distance < 9
+    equipL aether sword long +16
+
+//
+func Cyan(f,i)
+ equipL moon //hook
+ equipR vigor sword
+ ?foe=mushroom_boss
+  equip crossbow poison
+
+//
+var condicion = 'None'
+
+func Yellow(f,i)
+ ?loc.begin
+  brew wood + bronze
+  equipL trisk
+  equipR compound max
+ ?screen.i = 0 & f.Blade(true)
+  return
+ ?screen.i = 0 & loc !  "Angry Shroom"
+  equip ice staff hidden
+  ?totaltime > 1
+   activate R
+ ?loc = "Angry Shroom"
+  equipL trisk
+  equipR compound max
+ ?foe = boss
+  ?foe.distance < 24
+   equip poison crossbow
+   activate P
+  ?foe.count = 0
+   equipL trisk
+   ?pickup
+    equipR star
+   :
+    equipR compound max
+
+
+//  // ======= PRINTS ========
+//  >`0,7,Permapot:@permapot@
+ 
+//  // ===================VARS================== //
+//  var igc = item.GetCooldown
+//  var fd
+//  var ft
+//  var fs 
+//  fd = foe.distance
+//  ft = foe.time
+//  fs = foe.state
+
+// //==========BEGIN===============
+//  ?loc.begin
+//   brew wood + bronze
+
+//   equip trisk
+//   equipR compound +12
+//   return
+
+//  //=========POT=========
+//  :
+//   ?permapot
+//    ?buffs.GetTime("berserk") > 4000
+//     permapot = false
+//   :
+//    ?buffs.GetTime("berserk") < 1000
+//     permapot = true
+
+  
+//  //==========PERMAPOT RUN=============
+//  ?permapot & !loc.begin
+//   ?item.right = mask
+//    activate P
+
+//  //=========EQUIPS=======
+  
+//   equipR mask
+
+//   ?loc ! "Angry Shroom"
+//    ?summon.count = 0
+//     equipR fire_talisman
+//     activate R
+//     return
+
+ 
+//  //=====QUARTERSTAFF=========
+//   ?foe.distance > 25
+//    f.Quarterstaff()
+
+//  //=========MINIBOSS=============================================
+//   ?foe.id=fluff
+//    ?foe.distance < 5 & foe=explode & f.Mind()
+//     return
+//   :?foe.id=epic_snail & foe.armor & foe = boss
+//    equipL hook
+
+//  //=============BOSS========================================== 
+//   :?foe.id = mushroom_boss_fat
+//    equipL poison wand +21/21
+
+//   :?foe.id = mushroom_boss_skinny
+//     ?foe.count = 1
+//      f.Mask()
+//     equipL poison wand +21/21
+
+//    //PHASE 1
+//   :?foe.id = mushroom_boss
+//    ?f.Staff("poison")
+//     return
+//    ?foe.armor
+//     equipL poison hammer
+//    :
+//     equipL poison wand +21/21
+
+//   //  ?foe.debuffs.GetCount("debuff_chill") < 6
+//   //   equipL ice sword +21/0
+//   //  : 
+//   //   equipL poison sword +21/12
+
+//    ?foe.state = 32 & foe.time >= 48 //85 //48 no debuff_chill:6
+//     f.Mind()
+//   :
+//     equipL aether sword long
+
+//  //====GET ARMOR===========
+//   ?fd > 17 & fd < 24
+//    equipL trisk
+//    equipR poison shield
+//   :?fd < 17 & fd > 10
+//    equipL trisk
+//    ?item.GetCooldown("bash") <= 0
+//     equipR bash
+//    :?item.GetCooldown("dash") <= 0
+//     equipR dashing *0 +0
+//  :
+//  //==========NORMAL RUN===================================================================================
+//   ?loc ! "Angry Shroom"
+//    ?screen.i = 5 & foe.count <= 2 & armor > 50
+//     f.Staff("fire")
+
+//  //=========EQUIPS=======
+//   ?fd > 20 | fd < 0
+//    equip trisk
+//    equipR mask
+
+//  //================
+//   ?loc ! "Angry Shroom"
+//    ?summon.count = 0 & totaltime > 10 & totaltime < 30
+//     equipR aether_talisman
+//     activate R
+  
+//   ?buffs.GetCount("smite") < 10
+//    ?screen.i = 4 & foe.count > 4 & fd < 10 
+//     f.Blade(false)
+//   :
+//    ?screen.i = 4 & foe.count > 4
+//     activate voidweaver
+
+//  //=====QUARTERSTAFF=========
+//   ?foe.distance > 25
+//    f.Quarterstaff() 
+
+//  //====GET ARMOR===========
+//   ?foe.distance > 24
+//    equipL triskel
+
+//   :?fd > 17 & fd < 24
+//    equipL trisk
+//    equipR poison shield
+//   :?fd < 17 & fd > 10
+//    equipL trisk
+//    ?item.GetCooldown("bash") <= 0
+//     equipR bash
+//    :?item.GetCooldown("dash") <= 0
+//     equipR dashing *0 +0
+
+//   //=========MINIBOSS=============================================
+//   ?foe.id=fluff
+//    ?foe.distance < 5 & foe=explode & f.Mind()
+//     return
+//    :?fd > 10
+//     equipR dash
+//    :
+//     equipR hatchet
+//    return
+//   :?foe.id=epic_snail & foe.armor & foe = boss
+//    ?fd < 10
+//     equipL hook
+//    :?fd > 10
+//     equipL trisk
+//    return
+
+//   ?fd < 0
+//    equipL trisk
+//   :?fd > 11
+//    equipL trisk
+
+//  //=============BOSS==========================================
+//   :?foe.id = mushroom_boss_fat
+//    ?f.Wand("poison")
+//      return
+//    ?f.Staff("poison")
+//      return
+//    ?fd < 10
+//     ?foe.hp > 2000
+//      f.Bardiche()
+//     :
+//      equip poison wand +21/21
+
+//   :?foe.id = mushroom_boss_skinny & foe.count = 1
+//    ?buffs.string = smite
+//     f.Mask()
+//    equip poison wand +21/21
+
+//    //PHASE 1
+//   :?foe.id = mushroom_boss
+// /*   
+//    ?f.Staff("poison")
+//     return
+// */ 
+//    ?foe.armor
+//     equipL poison hammer
+//     equipR poison wand +21/21
+
+//    ?foe.state = 32 & foe.time >= 48 //85
+//     f.Mind()
+
+//    ?foe.state = 1 & foe.time < 120
+//     ?!ai.walking
+//      ?armor < 14
+//       equipR compound
+//       equipL quest
+//      :?armor >= 14
+//       equipR compound
+//       equipL quest
+//   //  :?foe.state = 2
+//   //   ?f.Staff("poison")
+//   //    return
+//   :
+//    ?fd < 21
+//     ?totaltime%2
+//      equipR hatchet
+//      equipL trisk
+//     :
+//       equipL poison wand +21/21
+//       equipR aether sword
+
+//    :
+//     equipL trisk
+
+//
+var permapot = false
+func Green(f,i)
+
+ // ======= PRINTS ========
+ >`10,6,Berserk:@buffs.GetTime("berserk")@
+ >`10,7,I.R:@item.right@
+ >`10,8,I.L:@item.left@
+ >`10,9,Permapot:@permapot@
+ >`10,10,AI.E:@ai.enabled@ AI.W:@ai.walking@ AI.I:@ai.idle@ AI.P:@ai.paused@
+ >`10,11,HP:@hp@, A:@armor@
+ >`10,12,FS:@foe.state@ FT:@foe.time@ FD:@foe.distance@ FDmg:@foe.damage@
+ >`10,13,F_ID:@foe.id@
+ 
+ // ===================VARS================== //
+ var igc = item.GetCooldown
+ var fd
+ var ft
+ var fs 
+ fd = foe.distance
+ ft = foe.time
+ fs = foe.state
+
+//==========BEGIN===============
+ ?loc.begin
+  brew wood + bronze
+
+  equip trisk
+  equipR compound +12
+  return
+
+ //=========POT=========
+ :
+  ?permapot
+   ?buffs.GetTime("berserk") > 4000
+    permapot = false
+  :
+   ?buffs.GetTime("berserk") < 1000
+    permapot = true
+
+  
+ //==========PERMAPOT RUN=============
+ ?permapot & !loc.begin
+  ?item.right = mask
+   activate P
+
+ //=========EQUIPS=======
+  equipR mask
+
+  ?loc ! "Angry Shroom"
+   ?summon.count = 0
+    equipR fire_talisman
+    activate R
+    return
+
+ 
+ //=====QUARTERSTAFF=========
+  ?foe.distance > 25
+   f.Quarterstaff()
+
+ //=========MINIBOSS=============================================
+  ?foe.id=fluff
+   ?foe.distance < 5 & foe=explode & f.Mind()
+    return 
+
+ //=============BOSS========================================== 
+  :?foe.id = mushroom_boss_fat
+    equipL poison sword +21/12
+
+  :?foe.id = mushroom_boss_skinny
+    ?foe.count = 1
+     f.Mask()
+    equipL poison sword +21/12
+
+   //PHASE 1
+  :?foe.id = mushroom_boss
+   ?f.Staff("poison")
+    return
+
+   ?foe.debuffs.GetCount("debuff_chill") < 6
+    equipL ice sword +21/0
+   : 
+    equipL poison sword +21/12
+
+   ?foe.state = 32 & foe.time >= 85 //48 no debuff_chill:6
+    f.Mind()
+
+  :
+    equipL fire sword long +21/5
+
+ //====GET ARMOR===========
+  ?fd > 17 & fd < 24
+   equipL trisk
+   equipR poison shield
+  :?fd < 17 & fd > 10
+   equipL trisk
+   ?item.GetCooldown("bash") <= 0
+    equipR bash
+   :?item.GetCooldown("dash") <= 0
+    equipR dashing *0 +0
+ :
+ //==========NORMAL RUN=============================================
+  ?loc ! "Angry Shroom"
+   ?screen.i = 5 & foe.count <= 2 & armor > 50
+    f.Staff("fire")
+
+ //=========EQUIPS=======
+  ?fd > 20 | fd < 0
+   equip trisk
+   equipR mask
+
+ //================
+  ?loc ! "Angry Shroom"
+   ?summon.count = 0 & totaltime > 10 & totaltime < 30
+    equipR fire_talisman
+    activate R
+  /*
+  ?buffs.GetCount("smite") < 10
+   ?screen.i = 4 & foe.count > 4 & fd < 10 
+    f.Blade(false)
+*/
+ //=====QUARTERSTAFF=========
+  ?foe.distance > 25
+   f.Quarterstaff() 
+
+ //====GET ARMOR===========
+  ?foe.distance > 24
+   equipL triskel
+
+  :?fd > 17 & fd < 24
+   equipL trisk
+   equipR poison shield
+  :?fd < 17 & fd > 10
+   equipL trisk
+   ?item.GetCooldown("bash") <= 0
+    equipR bash
+   :?item.GetCooldown("dash") <= 0
+    equipR dashing *0 +0
+
+  //=========MINIBOSS=============================================
+  ?foe.id=fluff
+   ?foe.distance < 5 & foe=explode & f.Mind()
+    return
+
+  ?fd < 0
+   equipL trisk
+  :?fd > 11
+   equipL trisk
+
+ //=============BOSS==========================================
+  :?foe.id = mushroom_boss_fat
+   ?f.Wand("ice")
+     return
+   ?fd < 10
+    ?foe.hp > 4300 & foe.hp < 7300
+     f.Moondial("poison sword +21/12","poison sword +21/5")
+    :?foe.hp > 7300
+     f.Bardiche()
+    :
+     equip poison crossbow +21/18
+
+  :?foe.id = mushroom_boss_skinny & foe.count = 1
+   ?buffs.string = smite
+    f.Mask()
+   equip poison crossbow +21/18
+
+   //PHASE 1
+  :?foe.id = mushroom_boss
+/*   
+   ?f.Staff("poison")
+    return
+*/ 
+   ?foe.debuffs.GetCount("debuff_chill") < 6 & hp<maxhp
+    f.Moondial("poison sword +21/12","ice sword di +21/0")
+   :?hp<maxhp 
+    f.Moondial("poison sword +21/12","vigor sword +21/3")
+   :
+     equip poison crossbow +21/18
+
+   ?foe.state = 32 & foe.time >= 85
+    f.Mind()
+
+   ?foe.state = 1 & foe.time < 120
+    ?!ai.walking
+     ?armor < 14
+      equipR compound +16
+      equipL quest
+     :?armor >= 14
+      equipR compound +12
+      equipL quest
+   :?foe.state = 2
+    ?f.Staff("poison")
+     return
+  :
+   ?fd < 21
+    ?totaltime%2
+     equipR hatchet
+     equipL trisk
+    :
+     ?foe.count <= 2 & foe ! ant_hill & buffs.string ! buff_inf_speed
+      equip stone crossbow +19
+     :
+      equip poison crossbow +21/18
+   :
+    equipL trisk

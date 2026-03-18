@@ -1,0 +1,280 @@
+/* 
+Script para la ubicación 
+*/
+
+//
+func White(f,i)
+ ?loc.begin
+  equipL trisk
+  equipR compound max
+ ?screen.i = 0 & f.Blade(true)
+  return
+ :?screen.i = 0
+  equip ice staff hidden
+  ?totaltime > 1
+   activate R
+ ?loc = chamber
+  equipL trisk
+  equipR compound max
+ ?foe = nagaraja
+  ?foe.distance < 24
+   equip aether crossbow
+   activate P
+  ?foe.count = 0
+   equipL trisk
+   ?pickup
+    equipR star
+   :
+    equipR compound max
+
+//
+func Cyan(f,i)
+ equipL hook
+ equipR vigor sword
+ ?foe=mushroom_boss
+  equip crossbow poison
+/*
+ f.Quarterstaff()
+ 
+ ?pickup.distance < 10
+  equipR star
+ 
+ :?foe.distance > 16
+  equipL trisk
+  equipR compound
+
+ :?foe.distance <= 16
+  equip aether crossbow
+
+ ?foe=boss
+  ?foe.state = 2 & foe.time > 10
+   ?f.Hammer()
+    return
+   :
+    equip aether crossbow
+*/
+
+//
+
+var loop = 0
+ ?loc.loop
+  loop++
+
+var flag = false
+var enduse = 0
+
+var permapot = false
+func Yellow(f,i)
+ ?loc.begin
+  equipL trisk
+  equipR compound max
+ ?screen.i = 0 & f.Blade(true)
+  return
+ ?screen.i = 0
+  equip ice staff hidden
+  ?totaltime > 1
+   activate R
+ ?loc = bronze_guardian_harder
+  equipL trisk
+  equipR compound max
+ ?foe = bronze_guardian
+  ?foe.distance < 24
+   equip aether crossbow
+   activate P
+  ?foe.count = 0
+   equipL trisk
+   ?pickup
+    equipR star
+   :
+    equipR compound max
+//  // ======= PRINTS ========
+//  >`0,1,Berserk:@buffs.GetTime("berserk")@
+//  >`0,2,I.R:@item.right@
+//  >`0,3,I.L:@item.left@
+//  >`0,4,Permapot:@permapot@
+//  >`0,5,AI.E:@ai.enabled@ AI.W:@ai.walking@ AI.I:@ai.idle@ AI.P:@ai.paused@
+//  >`0,6,HP:@hp@, A:@armor@
+//  >`0,7,FS:@foe.state@ FT:@foe.time@ FD:@foe.distance@ FDmg:@foe.damage@
+//  >`0,8,F_ID:@foe.id@
+//  // ===================VARS================== //
+//  var igc = item.GetCooldown
+//  var fd
+//  var ft
+//  var fs 
+//  fd = foe.distance
+//  ft = foe.time
+//  fs = foe.state
+//  //==========BEGIN===============
+//  ?loc.begin
+//   brew wood + bronze
+
+//   equip trisk
+//   equipR compound +12
+//   return
+
+//  //=========POT=========
+//  :
+//   ?permapot
+//    ?buffs.GetTime("berserk") > 2000
+//     permapot = false
+//   :
+//    ?buffs.GetTime("berserk") < 1000
+//     permapot = true
+
+  
+//  //==========PERMAPOT RUN=============
+//  ?permapot & !loc.begin
+//   ?item.right = mask
+//    activate P
+//    >POTION
+
+//  //=========EQUIPS=======
+//   equipR mask
+ 
+//  //=====QUARTERSTAFF=========
+//   ?foe.distance > 25
+//    f.Quarterstaff()
+
+//  //=========MINIBOSS=============================================
+//   ?foe=bomb_cart
+//    ?foe.distance < 5 & foe=explode & f.Mind()
+//     return
+//    ?fd > 10 & fd < 16 & ai.walking
+//     equipR dash
+//    :
+//     equipR mask  
+
+//  //=============BOSS========================================== 
+//   :?foe=bronze_guardian
+//    >BOSS
+//    ?foe.state = 2
+//     equip aether crossbow +21/18
+//     ?f.Staff(＂poison＂)
+//      return
+//     ?f.Hammer()
+//      return
+//   :
+//  //=======================NORMAL FOES============================
+//    equipL aether sword long +21/12
+
+//  //====GET ARMOR===========
+//   ?foe!bronze_guardian
+//    ?fd > 13 & fd < 24
+//     equipL trisk
+//     equipR aether shield A
+//    :?fd < 14 & fd > 10
+//     equipL trisk
+//     ?item.GetCooldown(＂bash＂) <= 0
+//      equipR bash
+//     :?item.GetCooldown(＂dash＂) <= 0
+//      equipR dashing *0 +0
+//  :
+//  //==========NORMAL RUN=============================================
+//   /*?loc=bronze_guardian_harder
+//    ?foe.state = 4
+//     activate P*/
+
+//   ?armor > 40 & foe.count = 0
+//    f.Staff("fire")
+
+//  //=========EQUIPS=======
+//   ?fd > 20 | fd < 0
+//    equip trisk
+//    equipR mask
+
+//  //=========PICKUP===========
+//   ?pickup.distance < 10
+//    equipR star
+
+//  //=====QUARTERSTAFF=========
+//   ?foe.distance > 25
+//    f.Quarterstaff()
+  
+//  //=========MINIBOSS=============================================
+//   ?foe=bomb_cart
+//    ?foe.distance < 5 & foe=explode & f.Mind()
+//     return
+//    ?fd > 10 & fd < 16 & ai.walking
+//     equipR dash
+//    :
+//     equipR mask  
+
+//  //=============BOSS========================================== 
+//   :?foe=bronze_guardian
+//    ?foe.state = 1 & foe.time < 120
+//     ?!ai.walking
+//      ?armor < 14
+//       equipR compound +13
+//       equipL quest
+//      :?armor >= 14 & armor < 35
+//       equipR compound +21
+//       equipL quest
+//      :
+//       equipR mask
+//    :?foe.state = 2
+//     ?buffs.string = smite
+//      f.Mask()
+//     ?f.Staff(＂poison＂)
+//      return
+//     equip aether crossbow +21/18
+//     ?f.Hammer()
+//      return
+    
+
+//  //=======================NORMAL FOES============================
+//   :
+//    ?fd < 21
+//     ?totaltime%2
+//      equipR hatchet
+//      equipL trisk
+//     :
+//      equip aether crossbow +21/18
+//    :
+//     equipL trisk
+
+//  //====GET ARMOR===========
+//   ?foe!bronze_guardian
+//    ?fd > 16 & fd < 24
+//     equipL trisk
+//     equipR aether shield A
+//    :?fd < 17 & fd > 10
+//     equipL trisk
+//     ?item.GetCooldown(＂bash＂) <= 0
+//      equipR bash
+//     :?item.GetCooldown(＂dash＂) <= 0
+//      equipR dashing *0 +0
+
+//   ?fd < 0
+//    equipL trisk
+//   :?fd > 11 & foe ! bronze_guardian
+//    equipL trisk
+
+//   ?loop % 2 = 1
+//    ?screen.i = 3 & buffs.GetCount("smite") < 10
+//     f.Blade(true)
+
+//=======Staff Fire on End===============
+/*
+  ?loc.loop
+   flag = false
+   enduse = 0
+
+  ?pickup = ＂treasure＂
+   flag = true
+
+  ?flag
+   enduse++
+
+  ?enduse >= 25 &
+  ^item.GetCooldown(＂staff_fire＂) < 1 &
+  ^armor >= 15
+   equip staff_hidden_fire
+   activate R
+   return
+
+  >Enduse: @enduse@ Staff: @item.GetCooldown(＂staff_fire＂)@
+*/
+
+//
+func Green(f,i)
+ return

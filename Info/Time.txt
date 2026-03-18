@@ -1,0 +1,6 @@
+/* 
+Este script muestra el tiempo total en frames y también la versión legible para humanos
+*/
+
+>`15,25,#green,@time.FormatDigital(totaltime, true)@
+>`0,25,TotalTime:@totalTime@

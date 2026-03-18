@@ -1,0 +1,284 @@
+/* 
+Script para la ubicación 
+*/
+
+//
+func White(f,i)
+ ?loc.begin
+  equipL trisk
+  equipR compound max
+//  ?screen.i ! 0 & item.GetCooldown("staff_ice") <= 0
+//   activate R
+//   >si... @item.GetCooldown("staff_ice")@
+//   return
+ ?debuffs.string ! weapon_swap_lock
+  ?pickup.distance <= -1
+   equipL star
+   equipR quest
+
+ ?screen.i = 0 & f.Blade(true)
+  return
+ ?screen.i = 0 & foe.count = 0 & foe.distance = 9999
+  equip ice staff hidden
+  ?totaltime > 1
+   activate R
+ :
+  // ?screen.i = 0 & f.Quarterstaff()
+  //  return
+  equipL triskelion
+  equipR shield ice ai *0 +0
+
+//
+func Cyan(f,i)
+ equip fire crossbow
+
+//
+var permapot = false
+func Yellow(f,i)
+ ?loc.begin
+  equipL trisk
+  equipR compound max
+
+ ?loc.loop
+  loc.Leave()
+
+ ?totaltime >= 200
+  loc.Leave()
+
+ ?pos.x > 200
+  loc.Pause()
+ 
+ ?pos.z ! 19 & screen.i > 10
+  loc.Leave()
+
+//  ?pos.x > 500
+//   activate P
+
+//  ?screen.i ! 0 & item.GetCooldown("staff_ice") <= 0
+//   activate R
+//   >si... @item.GetCooldown("staff_ice")@
+//   return
+ 
+ ?screen.i = 0 & f.Blade(true)
+  return
+ ?buffs.string = "smite" & f.LongRangeSpit(75) & foe.count > 0
+  return
+ ?screen.i = 0 & foe.count = 0 & foe.distance = 9999
+  ?pos.z ! 19 & totaltime > 1
+   loc.Leave()
+  equip ice staff hidden
+  ?totaltime > 1
+   activate R
+ :?screen.i < 5 & totaltime > 95
+  loc.Leave()
+ :?debuffs.string ! weapon_swap_lock
+  equipL triskelion
+  equipR star
+ 
+//  // ======= PRINTS ========
+//  >`10,6,Berserk:@buffs.GetTime("berserk")@
+//  >`10,7,I.R:@item.right@
+//  >`10,8,I.L:@item.left@
+//  >`10,9,Permapot:@permapot@
+//  >`10,10,AI.E:@ai.enabled@ AI.W:@ai.walking@ AI.I:@ai.idle@ AI.P:@ai.paused@
+//  >`10,11,HP:@hp@, A:@armor@
+//  >`10,12,FS:@foe.state@ FT:@foe.time@ FD:@foe.distance@ FDmg:@foe.damage@
+//  >`10,13,F_ID:@foe.id@
+//  // ===================VARS================== //
+//  var igc = item.GetCooldown
+//  var fd
+//  var ft
+//  var fs 
+//  fd = foe.distance
+//  ft = foe.time
+//  fs = foe.state
+//  //==========BEGIN===============
+//  ?loc.begin
+//   brew wood + bronze
+
+//   equip trisk
+//   equipR compound +12
+//   return
+
+//  //=========POT=========
+//  :
+//   ?permapot
+//    ?buffs.GetTime("berserk") > 4000
+//     permapot = false
+//   :
+//    ?buffs.GetTime("berserk") < 1000
+//     permapot = true
+
+  
+//  //==========PERMAPOT RUN=============
+//  ?permapot & !loc.begin
+//   ?item.right = mask
+//    activate P
+//    >POTION
+
+//  //=========EQUIPS=======
+//   equipR mask
+ 
+//  //=====QUARTERSTAFF=========
+//   ?foe.distance > 25
+//    f.Quarterstaff()
+
+//  //=========MINIBOSS=============================================
+//   ?foe=giant_ice_elemental
+//    ?fd < 10
+//     ?foe.debuffs.GetTime(＂stun＂) < 8
+//      equipL hook
+//     :
+//      equipL fire sword +21/12
+//    ?fd > 10 & fd < 16 & ai.walking
+//     equipR dash
+//    :
+//     equipR mask  
+
+//  //=============BOSS========================================== 
+//   :?foe=yeti
+//    >BOSS
+//    ?foe.debuffs.GetCount("debuff_chill") < 6
+//     equipL ice sword +21/0
+//    : 
+//     equipL fire sword +21/12
+//    ?foe.state = 1 & foe.time < 120
+//     ?!ai.walking
+//      ?armor < 15
+//       equipR compound
+//       equipL quest
+//    :?foe.state = 132
+//     ?f.Wand(＂ice＂)
+//      return
+//     ?f.Staff(＂poison＂)
+//      return
+//   :
+//    equipL fire sword long +21
+
+//  //====GET ARMOR===========
+//   ?fd > 17 & fd < 24
+//    equipL trisk
+//    equipR fire shield
+//   :?fd < 17 & fd > 10
+//    equipL trisk
+//    ?item.GetCooldown(＂bash＂) <= 0
+//     equipR bash
+//    :?item.GetCooldown(＂dash＂) <= 0
+//     equipR dashing *0 +0
+//  :
+//  //==========NORMAL RUN=============================================
+//   activate P
+//   ?armor > 50
+//    f.Staff("fire")
+//  //=========EQUIPS=======
+//   ?fd > 20 | fd < 0
+//    equip trisk
+//    equipR mask
+
+//  //=====QUARTERSTAFF=========
+//   ?foe.distance > 25
+//    f.Quarterstaff()
+
+//  //====GET ARMOR===========
+//   ?fd > 17 & fd < 24
+//    equipL trisk
+//    equipR fire shield
+//   :?fd < 17 & fd > 10
+//    equipL trisk
+//    ?item.GetCooldown(＂bash＂) <= 0
+//     equipR bash
+//    :?item.GetCooldown(＂dash＂) <= 0
+//     equipR dashing *0 +0
+
+//   ?fd < 0
+//    equipL trisk
+//   :?fd > 11
+//    equipL trisk
+  
+//  //=========MINIBOSS=============================================
+//   :?foe=giant_ice_elemental
+//    ?fd < 10
+//     ?foe.debuffs.GetTime(＂stun＂) < 8
+//      equipL hook
+//     :
+//      ?hp < maxhp
+//       f.Moondial("fire sword +21/12","vigor sword dl +21/3")
+//      :
+//       f.Moondial("fire sword +21/12","fire sword +21/8")
+
+//    :?fd > 10 & fd < 16 & ai.walking
+//     equipR dash
+
+//   :?foe=ice_pillar & fd < 7 & foe.count < 6
+//    f.Moondial("fire sword +21/12","fire sword +21/8")
+
+//  //=============BOSS========================================== 
+//   :?foe=yeti
+//    >BOSS
+//    ?foe.debuffs.GetCount("debuff_chill") < 6
+//     f.Moondial("fire sword +21/12","ice sword di +21/0")
+//    :
+//     f.Moondial("fire sword +21/12","fire sword +21/8")
+//    ?foe.state = 1 & foe.time < 120
+//     ?!ai.walking
+//      ?armor < 14
+//       equipR compound +16
+//       equipL quest
+//      :?armor >= 14
+//       equipR compound +12
+//       equipL quest
+//    :?foe.state = 132
+//     ?f.Wand(＂ice＂)
+//      return
+//     ?f.Staff(＂poison＂)
+//      return
+//   :
+//    ?fd < 21
+//     ?totaltime%2
+//      equipR hatchet
+//      equipL trisk
+//     :
+//      equip fire crossbow +21/17
+//    :
+//     equipL trisk
+
+//
+func Green(f,i)
+ ?loc.begin
+  brew stone + bronze
+  equipL trisk
+  equipR compound max
+
+ ?hp<maxhp
+  loc.Leave()
+
+//  ?totaltime > 10 & f.AetherTalisman(true)
+//   return
+ ?screen.i > 5 & item.GetCooldown("staff_ice") <= 0
+  activate R
+  >si... @item.GetCooldown("staff_ice")@
+  return
+ ?screen.i = 1 & f.Blade(true)
+  return
+ ?screen.i = 2 & foe.count = 0 & foe.distance = 9999
+  equip ice staff hidden
+  ?totaltime > 1
+   activate R
+ :
+  equipL triskelion
+  ?buffs.GetCount("smite") > 6
+   equipR shield ice ai *0 +0
+  :
+   equipR compound max
+  ?foe.distance > 10 & foe.distance < 16
+   ?foe = giant
+    equipR bash
+   :
+    equipR dash
+  ?foe.distance <= 10
+   f.Moondial("fire sword +21/21 D -shiny","fire sword +21/21 D shiny")
+   activate P
+  // ?screen.i = 2 & foe.distance < 10
+  //  activate voidweaver
+
+  
