@@ -17,7 +17,7 @@ import UI/Test
  ?loc.loop
   loop++
 
- >`25,26, #9b00f5 ,Loops:@loop@
+ >`25,26,#9b00f5,Loops:@loop@
 
 // Utilities ================================== \\
 var f = import Utilities/Funcs
