@@ -17,7 +17,7 @@ import UI/Test
  ?loc.loop
   loop++
 
- >`25,26,#00ccff,Loops:@loop@
+ >`25,26, #9b00f5 ,Loops:@loop@
 
 // Utilities ================================== \\
 var f = import Utilities/Funcs
@@ -45,9 +45,7 @@ var level
 
 ?!level | lastLoc ! loc
  loadLevel()
-
-?level
- level(f,i)
+level(f,i)
 
 func loadLevel()
  ?loc="rocky"
