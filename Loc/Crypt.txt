@@ -16,6 +16,8 @@ func Yellow(f,i)
   equipR compound max
  ?screen.i = 0 & f.Blade(true)
   return
+ ?buffs.string = "smite" & f.LongRangeSpit(75) & foe.count > 0
+  return
  ?screen.i = 0
   equip ice staff hidden
   ?totaltime > 1
